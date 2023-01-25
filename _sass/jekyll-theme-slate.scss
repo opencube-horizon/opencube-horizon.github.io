@@ -429,7 +429,10 @@ Full-Width Styles
 }
 
 #main_content {
-  padding-top: 20px;
+  position: relative;
+  max-width: 720px;
+  padding: 20px 10px;
+  margin: 0 auto;
 }
 
 #footer_wrap {
