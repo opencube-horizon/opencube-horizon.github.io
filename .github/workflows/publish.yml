@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.x'
 
       - name: Install dependencies
         run: |
-          pip install properdocs properdocs-literate-nav properdocs-theme-readthedocs
+          pip install properdocs mkdocs-literate-nav properdocs-theme-readthedocs
 
       - name: Build site
         id: build
@@ -29,7 +29,7 @@ jobs:
 
       - name: Upload artifact
         id: deployment
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./public
 
@@ -41,4 +41,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
