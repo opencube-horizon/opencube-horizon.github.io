@@ -22,6 +22,9 @@ jobs:
         run: |
           pip install properdocs mkdocs-literate-nav properdocs-theme-readthedocs
 
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
       - name: Build site
         id: build
         run: |
@@ -34,6 +37,7 @@ jobs:
           path: ./public
 
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
