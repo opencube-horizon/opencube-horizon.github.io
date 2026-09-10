@@ -1,0 +1,84 @@
+apiVersion: batch.volcano.sh/v1alpha1
+kind: Job
+metadata:
+  name: lm-mpi-job
+spec:
+  minAvailable: 3
+  schedulerName: volcano
+  plugins:
+    mpi: ["--master=mpilauncher","--worker=mpiworker","--port=2022"]
+  tasks:
+    - replicas: 1
+      name: mpilauncher
+      policies:
+        - event: TaskCompleted
+          action: CompleteJob
+      template:
+        spec:
+          securityContext:
+            fsGroup: 1001
+          volumes:
+            - name: home
+              persistentVolumeClaim:
+                claimName: pvc-home-directory
+          terminationGracePeriodSeconds: 0
+          containers:
+            - args:
+                - /usr/bin/bash
+                - -c
+                - |
+                 /usr/sbin/sshd -f /opt/ssh/sshd_config \
+                 && TMPDIR=$(mktemp -d) \
+                 && mpirun --prtemca plm_ssh_args "-p 2022" \
+                      --mca pml cm --mca mtl ofi --mca mtl_ofi_provider_include tcp \
+                      --map-by 'ppr:1:node' \
+                      --hostfile /etc/volcano/mpiworker.host \
+                      /opt/osu/mpi/collective/osu_alltoall -m :512 -i 100 \
+                      >"$TMPDIR/job.out" 2>"$TMPDIR/job.err" \
+                 && cp --recursive "$TMPDIR" "/home/mounted/job-$(date +%y-%m-%dT%H%M)"
+              image: harbor.pt.horizon-opencube.eu/baseimages/rt-mpi:latest
+              name: mpilauncher
+              securityContext:
+                runAsUser: 1001
+                runAsGroup: 1001
+              ports:
+                - containerPort: 2022
+                  name: mpijob-port
+              workingDir: /home
+              volumeMounts:
+                - name: home
+                  mountPath: /home/mounted
+          restartPolicy: OnFailure
+    - replicas: 2
+      name: mpiworker
+      template:
+        metadata:
+          labels:
+            app: mpiworker
+        spec:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+          terminationGracePeriodSeconds: 0
+          volumes:
+          containers:
+            - args:
+                - /usr/sbin/sshd
+                - -f
+                - /opt/ssh/sshd_config 
+                - -D
+              image: harbor.pt.horizon-opencube.eu/example-apps/osu:latest
+              name: mpiworker
+              ports:
+                - containerPort: 2022
+                  name: mpijob-port
+              workingDir: /home
+              volumeMounts:
+                - name: tmp
+                  mountPath: /dev/shm
+          volumes:
+            - name: tmp
+              emptyDir:
+                medium: Memory
+                sizeLimit: 8G
+          restartPolicy: OnFailure

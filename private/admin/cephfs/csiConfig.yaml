@@ -1,0 +1,26 @@
+csiConfig:
+   - clusterID: "a6f6c528-6f46-11ef-b8ea-1423f295d912"
+     monitors:
+       - "storage1hsn1.hsn.pt.horizon-opencube.eu:6789"
+       - "storage2hsn1.hsn.pt.horizon-opencube.eu:6789"
+       - "storage3hsn1.hsn.pt.horizon-opencube.eu:6789"
+     cephFS:
+       subvolumeGroup: "csi"
+
+storageClass:
+  create: true
+  clusterID: "a6f6c528-6f46-11ef-b8ea-1423f295d912"
+  fsName: "login-cont-volume"
+
+selinuxMount: false
+
+secret:
+  create: true
+  adminID: "logincontuser"
+  adminKey: ""
+  userID: "logincontuser"
+  userKey: ""
+
+cephConfConfigMapName: ceph-cephfs-config
+configMapName: ceph-csi-cephfs-config
+kmsConfigMapName: ceph-csi-cephfs-encryption-kms-config

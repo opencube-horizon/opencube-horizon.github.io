@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: influxdb
+  labels:
+    app: influxdb
+spec:
+  containers:
+  - image: influxdb:3-core
+    imagePullPolicy: Always
+    name: influxdb
+    command: ["influxdb3"]
+    args: ["serve", "--node-id", "influxdb", "--admin-token-file", "/opt/token.json"]
+    env:
+    - name: INFLUXDB3_OBJECT_STORE
+      value: "memory"
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      runAsUser: 1500
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    volumeMounts:
+    - name: influxdb-token
+      mountPath: /opt/token.json
+      subPath: token.json
+      readOnly: yes
+  volumes:
+  - name: influxdb-token
+    secret:
+      secretName: influxdb-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb-service
+spec:
+  selector:
+    app: influxdb
+  ports:
+    - protocol: TCP
+      port: 8181
+      targetPort: 8181
