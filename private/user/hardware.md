@@ -4,18 +4,19 @@ The OpenCUBE testbed is currently equipped with eight compute nodes and one logi
 
 ## Overview
 
-| Node | CPU | Memory | HSN | Accelerators | OS |
-|:-----|-----|--------|---------|--------------|----|
-| cn01 | Ampere Altra | 512GB | HPE Slingshot | | OpenSUSE Leap 16 |
-| cn02 | Ampere Altra | 512GB | HPE Slingshot | | OpenSUSE Leap 16 |
-| cn03 | Ampere Altra | 512GB | HPE Slingshot | 1x Xilinx U55C | OpenSUSE Leap 16 |
-| cn04 | Ampere Altra | 512GB | HPE Slingshot | 1x Xilinx U55C | Talos v1.13.4 |
-| cn05 | AmpereOne | 512GB | HPE Slingshot | 1x Xilinx U55C | OpenSUSE Leap 16 |
-| cn06 | AmpereOne | 512GB | HPE Slingshot | 1x Xilinx U55C | OpenSUSE Leap 16 |
-| cn07 | AmpereOne | 512GB | HPE Slingshot | | OpenSUSE Leap 16 |
-| cn08 | AmpereOne | 512GB | HPE Slingshot | | OpenSUSE Leap 16 |
-
-
+| Node | CPU            | Memory    | HSN           | Accelerators   | OS               |
+|:-----|----------------|-----------|---------------|----------------|------------------|
+| cn01  | Ampere Altra  | 512GB DDR | HPE Slingshot |                | OpenSUSE Leap 16 |
+| cn02  | Ampere Altra  | 512GB DDR | HPE Slingshot |                | OpenSUSE Leap 16 |
+| cn03  | Ampere Altra  | 512GB DDR | HPE Slingshot | 1x Xilinx U55C | OpenSUSE Leap 16 |
+| cn04  | Ampere Altra  | 512GB DDR | HPE Slingshot | 1x Xilinx U55C | Talos v1.13.4    |
+| cn05  | AmpereOne     | 512GB DDR | HPE Slingshot | 1x Xilinx U55C | OpenSUSE Leap 16 |
+| cn06  | AmpereOne     | 512GB DDR | HPE Slingshot | 1x Xilinx U55C | OpenSUSE Leap 16 |
+| cn07  | AmpereOne     | 512GB DDR | HPE Slingshot |                | OpenSUSE Leap 16 |
+| cn08  | AmpereOne     | 512GB DDR | HPE Slingshot |                | OpenSUSE Leap 16 |
+| cn09  | SiPearl RHEA1 |  64GB HBM2e | HPE Slingshot |                | RedHat Enterprise Linux 10 |
+| cn010 | SiPearl RHEA1 |  64GB HBM2e | HPE Slingshot |                | RedHat Enterprise Linux 10 |
+| cn011 | SiPearl RHEA1 |  64GB HBM2e | HPE Slingshot |                | RedHat Enterprise Linux 10 |
 
 ## Network
 
