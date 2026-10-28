@@ -62,7 +62,7 @@ kubectl config set-credentials oidc \
 	--exec-command=kubectl \
 	--exec-arg=oidc-login \
 	--exec-arg=get-token \
-	--exec-arg="--oidc-issuer-url=https://idm.horizon-opencube.eu:8443/oauth2/openid/kubernetes" \
+	--exec-arg="--oidc-issuer-url=https://idm.horizon-opencube.eu/oauth2/openid/kubernetes" \
 	--exec-arg="--oidc-client-id=kubernetes" \
 	--exec-arg="--skip-open-browser"
 ```
@@ -96,8 +96,6 @@ Groups      [oidc:group1 oidc:group2 system:authenticated]
 ```
 
 When using a login container (or the OpenCUBE login node), use SSH port tunneling to tunnel the `localhost:8000` server to your machine via `ssh -L 8000:localhost:8000 [...]`.
-
-In the current setup (2026-09-04), the `kanidm` backend is not accessible from outside the cluster. Use `sshuttle` to make it accessible: `sshuttle -vNHr login.pt.horizon-opencube.eu`
 
 > Note: Your Username as reported by `kubectl` will _not_ be your human-readable username, but instead a UUID.
 
