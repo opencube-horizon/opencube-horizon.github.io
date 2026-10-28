@@ -59,7 +59,6 @@ spec:
             runAsUser: 1001
             runAsGroup: 1001
           terminationGracePeriodSeconds: 5
-          volumes:
           containers:
             - args:
                 - /usr/sbin/sshd
