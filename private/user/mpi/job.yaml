@@ -18,6 +18,9 @@ spec:
           action: CompleteJob
       template:
         spec:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
           terminationGracePeriodSeconds: 0
           containers:
             - args:
@@ -32,9 +35,6 @@ spec:
                       /opt/osu/mpi/collective/osu_alltoall -m :65536 -i 100
               image: harbor.pt.horizon-opencube.eu/baseimages/rt-mpi:latest
               name: mpilauncher
-              securityContext:
-                runAsUser: 1001
-                runAsGroup: 1001
               ports:
                 - containerPort: 2022
                   name: mpijob-port

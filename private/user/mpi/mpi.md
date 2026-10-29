@@ -121,9 +121,9 @@ By default, no persistent storage is attached to Pods in general and Volcano Job
 1. copy data off your pods interactively via `kubectl cp`, or
 2. mount a persistent volume.
 
-You can mount your home directory mounted into your login container using the Persistent Volume Claim associated with it. Refer to [Login Containers/Usage](../../containerssh/usage#persistence) for more information. 
+Refer to [Storage](../../storage/storage) for more details on mounting persistent volumes.
 
-Refer to [job-storage.yaml](../job-storage.yaml) for an example Volcano Job description template that mounts a PVC. This file requires modification prior to launch! The relevant lines for storage are:
+Refer to [job-storage.yaml](../job-storage.yaml) for an example Volcano Job description template that mounts a PVC. The relevant lines for storage are:
 
 ```yaml
 spec:
@@ -133,6 +133,8 @@ spec:
         claimName: pvc-home-directory
   securityContext:
     fsGroup: 1001
+    runAsUser: 1001
+    runAsGroup: 1001
   containers:
     - image: harbor.pt.horizon-opencube.eu/baseimages/rt-mpi:latest
       name: mpilauncher
@@ -141,7 +143,7 @@ spec:
         - -c
         - |
          /usr/sbin/sshd -f /opt/ssh/sshd_config \
-         && TMPDIR=$(mktemp -d) \
+         && export TMPDIR=$(mktemp -d) \
          && mpirun --prtemca plm_ssh_args "-p 2022" \
               --mca pml cm --mca mtl ofi --mca mtl_ofi_provider_include tcp \
               --map-by 'ppr:1:node' \
@@ -149,19 +151,15 @@ spec:
               /opt/osu/mpi/collective/osu_alltoall -m :512 -i 100 \
               >"$TMPDIR/job.out" 2>"$TMPDIR/job.err" \
          && cp --recursive "$TMPDIR" "/home/mounted/job-$(date +%y-%m-%dT%H%M)"
-      securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
       volumeMounts:
         - name: home
-          mountPath: /home/<user-name>
+          mountPath: /home/mounted
 ```
 
 Several changes are included in the `mpilauncher`:
  
-1. The security context *of the pod* sets the fsGroup UID to the ID of the `sshuser`, 1001.
+1. The security context of the pod sets the `fsGroup` UID to the ID of the `sshuser`, 1001.
 2. After MPI application termination, output files are copied to the mounted home-directory at `volumeMounts.mountPath`, in this case `/home/mounted`. Due to the `fsGroup` entry, the mounted volume is writable by the `fsGroup`, which has been set to coincide with the `runAsGroup` entry, allowing access from that pod.
-3. Your login container sets the entry `fsGroup: <your-id>`, so that you always have access from your login container.
 
 In your login container, you should now see the following output:
 
@@ -173,7 +171,8 @@ total 512
 -rw-rw-r-- 1 buildah user   0 Sep 10 12:13 job.err
 -rw-rw-r-- 1 buildah user 405 Sep 10 12:13 job.out
 ```
-> Note: If your login container has already been running when submitting the Volcano Job, then you may observe that, in your login container, all files in the home-directory are now owned by group `1001`/`buildah`. This is due to the fact that the mechanism implementing `fsGroup` performs a `chown` on the volume prior to pod launch to the ID provided by `fsGroup`. The Volcano Job pod runs with `fsGroup: 1001`, which means a `chown` gets executed there. Since the volume is shared, these changes will be visible in your login container. To re-gain access, re-run the login container, triggering a new `chown` to your UID.
+
+> Note: If your login container has already been running when submitting the Volcano Job, then you may observe that in your login container, all files in the home-directory are now owned by group `1001`/`buildah`. This is due to the fact that the mechanism implementing `fsGroup` performs a `chown` on the volume prior to pod launch to the ID provided by `fsGroup`. The Volcano Job pod runs with `fsGroup: 1001`, which means a `chown` gets executed there. Since the volume is shared, these changes will be visible in your login container. To re-gain access, re-run the login container, triggering a new `chown` to your UID.
 
 ## MPI-Operator
 

@@ -17,6 +17,8 @@ spec:
         spec:
           securityContext:
             fsGroup: 1001
+            runAsUser: 1001
+            runAsGroup: 1001
           volumes:
             - name: home
               persistentVolumeClaim:
@@ -28,7 +30,7 @@ spec:
                 - -c
                 - |
                  /usr/sbin/sshd -f /opt/ssh/sshd_config \
-                 && TMPDIR=$(mktemp -d) \
+                 && export TMPDIR=$(mktemp -d) \
                  && mpirun --prtemca plm_ssh_args "-p 2022" \
                       --mca pml cm --mca mtl ofi --mca mtl_ofi_provider_include tcp \
                       --map-by 'ppr:1:node' \
@@ -38,9 +40,6 @@ spec:
                  && cp --recursive "$TMPDIR" "/home/mounted/job-$(date +%y-%m-%dT%H%M)"
               image: harbor.pt.horizon-opencube.eu/baseimages/rt-mpi:latest
               name: mpilauncher
-              securityContext:
-                runAsUser: 1001
-                runAsGroup: 1001
               ports:
                 - containerPort: 2022
                   name: mpijob-port
