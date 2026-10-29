@@ -46,7 +46,7 @@ Access to group namespaces requires a full login. Refer to the [Local Usage](#lo
 
 Access from a local machine uses Open-ID Connect (OIDC) for authentication. `kubectl` supports the OAuth2-Flow, but requires an external plugin.
 
-> Note: OIDC-based access requires either a valid token or a password+TOTP, which you receive during onboarding.
+> Note: OIDC-based access requires either a valid token or a password+TOTP, which you receive during onboarding. TOTP might not yet be enabled for all accounts.
 
 Install [`krew`](https://krew.sigs.k8s.io/) by following the official guide, which manages `kubectl` plugins.
 Next, install `oidc-login` using krew:

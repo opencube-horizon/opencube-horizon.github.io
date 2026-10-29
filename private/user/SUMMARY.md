@@ -4,7 +4,9 @@
 	* [Usage](containerssh/usage.md)
 	* [Customization](containerssh/customization.md)
 * [Slingshot](slingshot/slingshot.md)
+* [Storage](storage/storage.md)
 * [FPGA](fpga.md)
+* [Base Container Images](baseimages.md)
 * [MPI](mpi/mpi.md)
 * OpenFAM
 	* [Usage](openfam/usage.md)

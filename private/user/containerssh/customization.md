@@ -17,8 +17,13 @@ Example:
 ```docker
 FROM harbor.pt.horizon-opencube.eu/containerssh/containerssh-baseimage:latest
 
-RUN ... 
+[...]
+
+ENTRYPOINT ["/usr/local/bin/tini", "-s", "--", "/usr/local/bin/start"]
+CMD ["/bin/bash", "-li"]
 ```
+
+Note that it is strongly suggested to use the stated entrypoint. The `containerssh-baseimage` ships with the `start` file in `/usr/local/bin`, which manages starting several necessary components (see [Expected Components](#expected-components)), without which the login container may cease to function correctly!
 
 After building the image, push it to the container image repository at harbor at repository `containerssh`. The tag must follow the format `containerssh-image-$USERNAME`, where `$USERNAME` is your username.
 

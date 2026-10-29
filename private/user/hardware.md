@@ -15,8 +15,8 @@ The OpenCUBE testbed is currently equipped with eight compute nodes and one logi
 | cn07  | AmpereOne     | 512GB DDR | HPE Slingshot |                | OpenSUSE Leap 16 |
 | cn08  | AmpereOne     | 512GB DDR | HPE Slingshot |                | OpenSUSE Leap 16 |
 | cn09  | SiPearl RHEA1 |  64GB HBM2e | HPE Slingshot |                | RedHat Enterprise Linux 10 |
-| cn010 | SiPearl RHEA1 |  64GB HBM2e | HPE Slingshot |                | RedHat Enterprise Linux 10 |
-| cn011 | SiPearl RHEA1 |  64GB HBM2e | HPE Slingshot |                | RedHat Enterprise Linux 10 |
+| cn10 | SiPearl RHEA1 |  64GB HBM2e | HPE Slingshot |                | RedHat Enterprise Linux 10 |
+| cn11 | SiPearl RHEA1 |  64GB HBM2e | HPE Slingshot |                | RedHat Enterprise Linux 10 |
 
 ## Network
 
@@ -39,6 +39,6 @@ Five Xilinx U55C FPGAs are installed in the testbed. Their location is provided 
 
 ## Operating System
 
-The final OpenCUBE deployment will use the Talos Operating System. Currently, only `cn04` uses Talos. The remaining nodes use an OpenSUSE Leap 16. 
+The final OpenCUBE deployment will use the Talos Operating System. Currently, only `cn04` uses Talos. Nodes `cn{01-08}` use OpenSUSE Leap 16, nodes `cn{09-11}` use RedHat Enterprise Linux 10.
 
 Note that raw SSH login is only possible to the OpenSUSE Leap systems. For system access to the final, Talos-based deployment, refer to [System Access](../system-access/overview).
