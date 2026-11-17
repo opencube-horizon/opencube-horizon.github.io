@@ -3,6 +3,8 @@
 * Login Containers
 	* [Usage](containerssh/usage.md)
 	* [Customization](containerssh/customization.md)
+* K8s
+	* [Scheduling Workflows](k8s/workflows.md)
 * [Slingshot](slingshot/slingshot.md)
 * [Storage](storage/storage.md)
 * [FPGA](fpga.md)
